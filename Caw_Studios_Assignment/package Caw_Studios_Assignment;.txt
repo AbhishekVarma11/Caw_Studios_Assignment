@@ -1,0 +1,100 @@
+package Caw_Studios_Assignment;
+import java.util.List;
+
+import org.json.JSONObject;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.Test;
+
+public class DynamicTableTest {
+	
+	    	
+	    	@Test
+	    	public void Dynamic_Table_Test() throws InterruptedException
+	    	{
+	        // Set the path to the chromedriver executable. Download it from https://sites.google.com/chromium.org/driver/
+	        System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")+"/drivers/chromedriver.exe");
+
+	        // Create a new instance of the Chrome WebDriver
+	        WebDriver driver = new ChromeDriver();
+
+	        // Replace 'your_url_here' with the actual URL you want to open
+	        String url = "https://testpages.herokuapp.com/styled/tag/dynamic-table.html";
+
+	        // Navigate to the specified URL
+	        driver.get(url);
+	        
+	        WebElement tb=driver.findElement(By.xpath("//summary[contains(text(),'Table Data')]"));
+	        tb.click();
+	        Thread.sleep(3000);
+	        WebElement jsonData=driver.findElement(By.xpath("//textarea[@id='jsondata']"));
+	        jsonData.clear();
+	        String jD = "[{\"name\":\"Bob\",\"age\":20,\"gender\":\"male\"},{\"name\":\"George\",\"age\":42,\"gender\":\"male\"},{\"name\":\"Sara\",\"age\":42,\"gender\":\"female\"},{\"name\":\"Conor\",\"age\":40,\"gender\":\"male\"},{\"name\":\"Jennifer\",\"age\":42,\"gender\":\"female\"}]";
+	        jsonData.sendKeys(jD);
+	        WebElement refreshButton=driver.findElement(By.xpath("//button[@id='refreshtable']"));
+	        
+	        refreshButton.click();
+	        
+
+	        // Replace 'table_id' with the actual ID of your table element
+	        String tableId = "dynamictable";
+
+	        // Locate the table element by its ID
+	        WebElement table = driver.findElement(By.id(tableId));
+
+	        // Get all rows of the table
+	        List<WebElement> rows = table.findElements(By.tagName("tr"));
+
+	        // Iterate through rows and print data
+	        for (WebElement row : rows) {
+	            // Get all columns of the row
+	            List<WebElement> columns = row.findElements(By.tagName("td"));
+
+	            // Iterate through columns and print data
+	            for (WebElement column : columns) {
+	                System.out.print(column.getText() + "\t");
+	            }
+	            System.out.println(); // Move to the next line after printing a row
+	        }
+	        // Check if the entered JSON data matches the table data
+	        if (isJsonDataMatchingTable(jD, rows)) {
+	            System.out.println("JSON data and Table data match!");
+	        } else {
+	            System.out.println("JSON data and Table data do not match!");
+	        }
+	    	}
+
+
+
+	    private boolean isJsonDataMatchingTable(String jsonData, List<WebElement> rows) {
+	        StringBuilder tableData = new StringBuilder();
+
+	        for (WebElement row : rows) {
+	            List<WebElement> columns = row.findElements(By.tagName("td"));
+	            for (WebElement column : columns) {
+	                tableData.append(column.getText()).append("\t");
+	            }
+	            tableData.append("\n");
+	        }
+		    System.out.println(jsonData);
+
+	        System.out.println("\nTable Data:");
+	        System.out.println(tableData);
+
+	        return jsonData.equals(tableData.toString().trim());
+	       
+	    }
+
+	    
+	    
+
+}
+
+
+
+
+
+

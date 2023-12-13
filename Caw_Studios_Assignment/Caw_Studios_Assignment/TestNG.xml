@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Caw_studios">
+
+
+
+	<test name="Caw_studios Test">
+		<parameter name="browser" value="chrome" />
+		<classes>
+			 <class name="Caw_Studios_Assignment.DynamicTableTest.java" />
+			 <class name="Caw_Studios_Assignment.DynamicTableTest2.java" />
+
+			
+		</classes>
+
+	</test>
+
+</suite>
